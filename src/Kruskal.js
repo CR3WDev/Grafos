@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { createCanvas } from "algorithmx";
-import { network1, network2 } from "./networks";
+import { network1 } from "./networks";
+import { useNavigate } from "react-router-dom";
 
 let UnionFind = require("union-find");
 
 function Kruskal() {
-  const [network, updateNetwork] = useState(network1);
+  const network = network1;
   const [isClicked, startAnimation] = useState(true);
+  const navigate = useNavigate();
 
+  const handleEditClick = () => {
+    navigate("/form");
+  };
   const prim = (net, nods, canvas) => {
     // let maxW = 10000;
     // let n;
@@ -89,28 +94,13 @@ function Kruskal() {
   return (
     <div className="App">
       <div className="graph-section">
-        <h2>Kruskal Algorithm</h2>
-        <button
-          className="btn"
-          onClick={() => {
-            updateNetwork(network1);
-            startAnimation(true);
-          }}
-        >
-          Network1
-        </button>
-        <button
-          className="btn"
-          onClick={() => {
-            updateNetwork(network2);
-            startAnimation(true);
-          }}
-        >
-          Network2
-        </button>
+        <h1 className="m-4">Kruskal Algorithm</h1>
         <div id="graph"></div>
         <button className="btn" onClick={() => startAnimation(true)}>
           Replay
+        </button>
+        <button className="btn" onClick={() => handleEditClick()}>
+          edit
         </button>
       </div>
     </div>
