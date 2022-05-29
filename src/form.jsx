@@ -4,7 +4,6 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import {
   FormControl,
@@ -24,11 +23,16 @@ export default function Form() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [verticesAmount, setVerticesAmount] = React.useState(0);
   const [edgesAmount, setEdgesAmount] = React.useState(0);
-
+  // eslint-disable-next-line no-unused-vars
+  const [verticesNames, setVerticesNames] = React.useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [edgesNames, setEdgesNames] = React.useState([]);
   const isLastStep = activeStep === steps.length - 1;
   const navigate = useNavigate();
 
   const handleNext = () => {
+    console.log(verticesNames);
+    console.log(edgesNames);
     if (isLastStep) {
       navigate("/");
     }
@@ -78,15 +82,18 @@ export default function Form() {
           ) : null}
           {activeStep === 1 ? (
             <>
-              {Array.from({ length: verticesAmount }).map((index) => {
-                console.log(Array.from({ length: verticesAmount }));
+              {Array.from({ length: verticesAmount }).map((o, index) => {
                 return (
                   <React.Fragment key={index}>
                     <div>
                       <TextField
                         fullWidth
+                        value={verticesNames[index]}
                         label="nome do vertice"
                         className="mb-3"
+                        onChange={(e) =>
+                          (verticesNames[index] = e.target.value)
+                        }
                       ></TextField>
                     </div>
                   </React.Fragment>
@@ -96,39 +103,51 @@ export default function Form() {
           ) : null}
           {activeStep === 2 ? (
             <>
-              {Array.from({ length: edgesAmount }).map((index) => {
+              {Array.from({ length: edgesAmount }).map((o, i) => {
                 return (
-                  <React.Fragment key={index}>
-                    <div>
-                      <FormControl>
-                        <InputLabel id="demo-simple-select-label">
-                          Age
-                        </InputLabel>
+                  <React.Fragment key={i}>
+                    <div className="d-flex justify-content-center mb-3">
+                      <FormControl className="col-4">
+                        <InputLabel id="origem">Origem</InputLabel>
                         <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          label="Age"
-                          onChange={() => {}}
+                          labelId="origem"
+                          id="origem"
+                          label="origem"
+                          value={edgesNames[i]}
+                          onChange={(e) => {
+                            edgesNames[i] = e.target.value;
+                          }}
                         >
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {verticesNames.map((e, index) => {
+                            return (
+                              <MenuItem value={e} key={index}>
+                                {e}
+                              </MenuItem>
+                            );
+                          })}
                         </Select>
                       </FormControl>
-                      <TextField></TextField>
-                      <FormControl>
+                      <TextField
+                        className="col-auto mx-3"
+                        label="Peso"
+                      ></TextField>
+                      <FormControl className="col-4">
                         <InputLabel id="demo-simple-select-label">
-                          Age
+                          Destino
                         </InputLabel>
                         <Select
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          label="Age"
+                          label="Destino"
                           onChange={() => {}}
                         >
-                          <MenuItem value={10}>Ten</MenuItem>
-                          <MenuItem value={20}>Twenty</MenuItem>
-                          <MenuItem value={30}>Thirty</MenuItem>
+                          {verticesNames.map((e, index) => {
+                            return (
+                              <MenuItem value={e} key={index}>
+                                {e}
+                              </MenuItem>
+                            );
+                          })}
                         </Select>
                       </FormControl>
                     </div>
